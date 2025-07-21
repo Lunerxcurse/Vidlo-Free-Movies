@@ -1,16 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #0a0a0a;
-    color: #ffffff;
-    overflow-x: hidden;
-}
-
 /* Navigation */
 .navbar {
     position: fixed;
@@ -33,10 +20,16 @@ body {
     height: 60px;
 }
 
-.nav-logo h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #007bff;
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-logo img {
+    height: 160px;
+    width: auto;
+    object-fit: contain;
 }
 
 @media (max-width: 768px) {
@@ -375,7 +368,7 @@ body {
 }
 
 .movie-card {
-    flex: 0 0 220px;
+    flex: 0 0 160px;
     background: #1a1a1a;
     border-radius: 8px;
     overflow: hidden;
@@ -396,7 +389,7 @@ body {
 .movie-poster {
     position: relative;
     width: 100%;
-    height: 320px;
+    height: 240px;
     overflow: hidden;
 }
 
@@ -412,12 +405,12 @@ body {
 }
 
 .movie-info {
-    padding: 1rem;
+    padding: 0.75rem;
     background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
 }
 
 .movie-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: #ffffff;
@@ -534,70 +527,44 @@ body {
     visibility: visible;
 }
 
-.movie-detail {
-    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
-    border-radius: 16px;
-    max-width: 1000px;
-    width: 90%;
-    max-height: 90vh;
-    overflow: hidden;
-    position: relative;
-    transform: scale(0.9);
+/* Movie Detail Modal Mobile Optimization */
+.movie-detail-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000000;
+    overflow-y: auto;
+    transform: translateY(100%);
     transition: transform 0.3s ease;
-    border: 1px solid #333;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
 }
 
-.modal-overlay.active .movie-detail {
-    transform: scale(1);
+.modal-overlay.active .movie-detail-fullscreen {
+    transform: translateY(0);
 }
 
-.close-btn {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid #333;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-}
-
-.close-btn:hover {
-    background: #333;
-    border-color: #007bff;
-    transform: scale(1.1);
-}
-
-.movie-detail-content {
-    display: flex;
-    flex-direction: row;
-    min-height: 500px;
-}
-
-.movie-detail .movie-poster {
+.movie-hero {
     position: relative;
-    width: 400px;
-    height: 100%;
-    min-height: 500px;
-    flex-shrink: 0;
+    height: 50vh;
+    min-height: 350px;
+    overflow: hidden;
 }
 
-.movie-detail .movie-poster img {
+.movie-backdrop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.movie-backdrop img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.play-overlay {
+.backdrop-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -606,377 +573,370 @@ body {
     background: linear-gradient(
         180deg,
         transparent 0%,
-        transparent 60%,
-        rgba(0, 0, 0, 0.8) 100%
+        rgba(0, 0, 0, 0.3) 40%,
+        rgba(0, 0, 0, 0.8) 80%,
+        rgba(0, 0, 0, 0.95) 100%
     );
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    padding: 1.5rem;
 }
 
-.play-btn {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: #007bff;
-    border: none;
-    color: white;
-    cursor: pointer;
+.hero-content {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 24px rgba(0, 123, 255, 0.3);
+    align-items: flex-end;
+    gap: 1.5rem;
+    max-width: 1200px;
+    width: 100%;
 }
 
-.play-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 32px rgba(0, 123, 255, 0.4);
-    background: #0056b3;
+.movie-poster-small {
+    flex-shrink: 0;
+    width: 140px;
+    height: 210px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
 }
 
-.movie-detail .movie-info {
+.movie-poster-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-info-hero {
     flex: 1;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    color: white;
 }
 
-.movie-info h1 {
+.movie-info-hero h1 {
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    color: #ffffff;
-    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
 }
 
-.movie-meta {
+.movie-meta-hero {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.year {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: white;
-}
-
-.rating {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-}
-
-.description {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #cccccc;
-    margin-bottom: 2rem;
-    text-align: justify;
-}
-
-.action-buttons {
-    display: flex;
     gap: 1rem;
+    margin-bottom: 1rem;
     flex-wrap: wrap;
-    margin-top: auto;
 }
 
-.action-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 1.5rem;
-    border: 2px solid #333;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-    font-weight: 500;
+.movie-meta-hero .year {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
     backdrop-filter: blur(10px);
 }
 
-.action-btn:hover {
-    border-color: #007bff;
-    background: rgba(0, 123, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
-}
-
-.action-btn.active {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    border-color: #007bff;
-    color: white;
-}
-
-/* Video Player */
-.video-player-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #000000;
-    z-index: 3000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.video-player-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.back-btn {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid #333;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-    background: #333;
-    border-color: #007bff;
-}
-
-.youtube-player {
-    width: 100%;
-    height: 100%;
-}
-
-.youtube-player iframe {
-    width: 100%;
-    height: 100%;
-}
-
-.custom-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-    padding: 2rem 2rem 1rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.video-container:hover .custom-controls,
-.custom-controls.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.control-bar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.control-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+.movie-meta-hero .rating {
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
 }
 
-.control-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #007bff;
-}
-
-.progress-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.progress-bar {
-    flex: 1;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
-    position: relative;
-    cursor: pointer;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #007bff;
-    border-radius: 3px;
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-.progress-handle {
-    position: absolute;
-    top: 50%;
-    left: 0%;
-    width: 12px;
-    height: 12px;
-    background: #007bff;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-}
-
-.progress-handle:active {
-    cursor: grabbing;
-}
-
-.time-display {
-    font-size: 0.9rem;
-    white-space: nowrap;
+.movie-meta-hero .duration {
     color: #cccccc;
+    font-size: 0.95rem;
 }
 
-.volume-container {
+.movie-info-hero .description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #e0e0e0;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.main-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.play-button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-.volume-slider {
-    width: 80px;
-}
-
-.volume-slider input {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    outline: none;
-    appearance: none;
-}
-
-.volume-slider input::-webkit-slider-thumb {
-    appearance: none;
-    width: 12px;
-    height: 12px;
+    padding: 0.75rem 1.5rem;
     background: #007bff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+    min-height: 48px;
+}
+
+.play-button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 123, 255, 0.4);
+}
+
+.trailer-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    min-height: 48px;
+}
+
+.trailer-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.action-btn-round {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    min-width: 44px;
+}
+
+.action-btn-round:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.action-btn-round.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.movie-detail-sections {
+    padding: 2rem 1.5rem;
+    background: #0a0a0a;
+}
+
+.detail-section {
+    margin-bottom: 2.5rem;
+}
+
+.detail-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.season-selector {
+    margin-bottom: 2rem;
+}
+
+.season-selector select {
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 8px;
+    color: white;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    min-width: 150px;
     cursor: pointer;
 }
 
-/* Progress indicator for Continue Watching */
-.progress-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 4px;
-    background: #007bff;
-    border-radius: 0 0 12px 12px;
-    transition: width 0.3s ease;
+.season-selector select:focus {
+    outline: none;
+    border-color: #007bff;
 }
 
-/* Embed Player */
-.embed-player {
+.episodes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.episode-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.episode-card:hover {
+    transform: translateY(-4px);
+    border-color: #007bff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.episode-thumbnail {
     position: relative;
     width: 100%;
-    height: 100%;
-    background: #000;
-}
-
-.embed-player iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* Embed Controls */
-.embed-controls {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 1px solid #333;
-}
-
-.embed-source-group {
-    margin-bottom: 1rem;
-}
-
-.embed-source-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #cccccc;
-}
-
-.embed-source-group select {
-    width: 100%;
-    padding: 0.5rem;
+    height: 180px;
     background: #333;
-    border: 1px solid #555;
-    border-radius: 6px;
-    color: white;
-    font-size: 0.9rem;
-}
-
-.embed-source-group select:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-.season-episode-controls {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
-.season-episode-controls input {
-    flex: 1;
-    padding: 0.5rem;
-    background: #333;
-    border: 1px solid #555;
-    border-radius: 6px;
+.episode-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.episode-play-btn {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.9);
+    border: none;
     color: white;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.season-episode-controls input:focus {
-    outline: none;
-    border-color: #007bff;
+.episode-card:hover .episode-play-btn {
+    opacity: 1;
+}
+
+.episode-info {
+    padding: 1.5rem;
+}
+
+.episode-number {
+    color: #007bff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.episode-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.episode-description {
+    color: #cccccc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.episode-duration {
+    color: #999;
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+}
+
+.similar-movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.similar-movie-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.similar-movie-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.similar-movie-poster {
+    width: 100%;
+    height: 280px;
+    position: relative;
+}
+
+.similar-movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.similar-movie-info {
+    padding: 1rem;
+}
+
+.similar-movie-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.similar-movie-meta {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.movie-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
+}
+
+.detail-label {
+    color: #999;
+    font-weight: 600;
+    min-width: 100px;
+    margin-right: 1rem;
+}
+
+.detail-value {
+    color: white;
+    flex: 1;
 }
 
 /* Page Overlay Styles */
@@ -1011,7 +971,7 @@ body {
     align-items: center;
     gap: 1.5rem;
     margin-bottom: 2rem;
-    padding-top: 60px; /* Account for fixed navbar */
+    padding-top: 60px;
 }
 
 .page-header h1 {
@@ -1118,6 +1078,11 @@ body {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    /* Hide search and account buttons on mobile */
+    .nav-actions {
+        display: none;
+    }
+
     .nav-container {
         padding: 0 1rem;
         height: 56px;
@@ -1130,10 +1095,6 @@ body {
     .nav-link {
         font-size: 0.85rem;
         padding: 0.75rem 0;
-    }
-
-    .nav-actions {
-        gap: 0.75rem;
     }
 
     .search-btn, .profile-icon {
@@ -1502,6 +1463,10 @@ body {
         padding: 0.875rem;
         font-size: 0.85rem;
     }
+
+    .movie-info-hero .description {
+        display: none;
+    }
 }
 
 /* Touch and Accessibility Improvements */
@@ -1549,4 +1514,356 @@ body {
         padding-left: max(1rem, env(safe-area-inset-left));
         padding-right: max(1rem, env(safe-area-inset-right));
     }
+}
+
+/* Mobile Responsive for Movie Detail Page */
+@media (max-width: 768px) {
+    /* Hide these buttons on mobile */
+    .main-actions .action-btn-round,
+    .trailer-button {
+        display: none;
+    }
+
+    /* Keep only the play button */
+    .main-actions {
+        justify-content: center;
+    }
+
+    .play-button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* Adjust modal close button */
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+    }
+
+    /* Make movie info text smaller */
+    .movie-info-hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .movie-meta-hero {
+        flex-wrap: wrap;
+    }
+    
+    .description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-info-hero h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #000000;
+    border-top: 1px solid #1a1a1a;
+    z-index: 1001;
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: block;
+    }
+    
+    .main-content {
+        margin-bottom: 60px;
+    }
+    
+    .page-container {
+        padding-bottom: 80px;
+    }
+}
+
+/* Account Settings Modal Styles */
+.account-settings-modal .account-settings {
+    background: #1a1a1a;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+}
+
+.account-settings-content {
+    padding: 2rem;
+}
+
+.account-settings h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+    color: #007bff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item label {
+    color: #cccccc;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="email"],
+.setting-item select {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 0.5rem;
+    flex: 1;
+    max-width: 200px;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #007bff;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #333;
+}
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+}
+
+.action-btn.primary {
+    background: #007bff;
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.action-btn.secondary {
+    background: #2a2a2a;
+    color: #cccccc;
+    border: 1px solid #444;
+}
+
+.action-btn.secondary:hover {
+    background: #333;
+}
+
+.action-btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.action-btn.danger:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.success-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive for Account Settings */
+@media (max-width: 768px) {
+    .account-settings {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .account-settings-content {
+        padding: 1.5rem;
+    }
+    
+    .account-settings h2 {
+        font-size: 1.5rem;
+    }
+    
+    .settings-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .setting-item input[type="text"],
+    .setting-item input[type="email"],
+    .setting-item select {
+        max-width: none;
+        width: 100%;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}
+
+.mobile-account-dropdown {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    z-index: 1002;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-account-dropdown.active {
+    transform: translateY(0);
+}
+
+.mobile-dropdown-content {
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    border-radius: 12px 12px 0 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.mobile-dropdown-content a {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 1px solid #2a2a2a;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.mobile-dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.mobile-dropdown-content a:hover {
+    background-color: #2a2a2a;
+    color: #007bff;
+}
+
+.mobile-dropdown-content i {
+    width: 16px;
+}
+
+/* Remove my list from bottom nav styling */
+.mobile-bottom-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.mobile-bottom-nav li {
+    flex: 1;
+}
+
+.mobile-bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.75rem;
+    gap: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.mobile-bottom-nav a:hover,
+.mobile-bottom-nav a.active {
+    color: #007bff;
+}
+
+.mobile-bottom-nav i {
+    font-size: 1.25rem;
 }
