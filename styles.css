@@ -322,6 +322,7 @@
     font-weight: 700;
     margin-bottom: 1rem;
     color: #ffffff;
+    text-align: left;
 }
 
 .hero-content p {
@@ -329,6 +330,9 @@
     opacity: 0.8;
     line-height: 1.6;
     color: #cccccc;
+    text-align: left;
+    margin-top: 1rem;
+    display: block;
 }
 
 /* Content Sections */
@@ -1123,6 +1127,7 @@
     .hero-content {
         margin-left: 0;
         max-width: 100%;
+        text-align: center;
     }
 
     .hero-content h2 {
@@ -1134,6 +1139,7 @@
         font-size: 1rem;
         line-height: 1.5;
         margin-bottom: 1rem;
+        display: block;
     }
 
     .content-section {

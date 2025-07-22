@@ -1681,7 +1681,7 @@
                         <a href="#" data-genre="documentary">Documentary</a>
                     </div>
                 </div>
-                <a href="#" class="nav-link">Live Shows</a>
+                <a href="#" class="nav-link" id="liveShowsLink">Live Shows</a>
             </div>
             <div class="nav-actions">
                 <button class="search-btn" id="searchBtn">
@@ -1880,7 +1880,6 @@
                                     </button>
                                     <button class="action-btn-round watch-later-btn" id="watchLaterBtn">
                                         <i class="far fa-bookmark"></i>
-                                        <span>Watch Later</span>
                                     </button>
                                     <button class="action-btn-round share-btn" id="shareBtn">
                                         <i class="fas fa-share"></i>
@@ -2353,6 +2352,16 @@
             if (elements.watchLaterBackBtn) elements.watchLaterBackBtn.addEventListener('click', closePage);
             if (elements.historyBackBtn) elements.historyBackBtn.addEventListener('click', closePage);
             
+            // Live Shows link
+            const liveShowsLink = document.getElementById('liveShowsLink');
+            if (liveShowsLink) {
+                liveShowsLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterByTVShows();
+                    closeDropdowns();
+                });
+            }
+            
             // Close dropdowns when clicking outside
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('.nav-dropdown')) {
@@ -2378,33 +2387,6 @@
                         closeDropdowns();
                     }
                 }
-            });
-
-            // Mobile bottom nav
-            const navHome = document.getElementById('navHome');
-            const navMovies = document.getElementById('navMovies');
-            const navSearch = document.getElementById('navSearch');
-            const navAccount = document.getElementById('navAccount');
-
-            if (navHome) navHome.addEventListener('click', (e) => {
-                e.preventDefault();
-                closePage(); // Close any open pages
-                closeModal(); // Close any modals
-            });
-
-            if (navMovies) navMovies.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterByGenre('action');
-            });
-
-            if (navSearch) navSearch.addEventListener('click', (e) => {
-                e.preventDefault();
-                toggleSearch();
-            });
-
-            if (navAccount) navAccount.addEventListener('click', (e) => {
-                e.preventDefault();
-                toggleAccountDropdownMobile();
             });
         }
 
@@ -2485,10 +2467,10 @@
                 const suggestionItem = document.createElement('div');
                 suggestionItem.className = 'suggestion-item';
                 
-                const poster = item.Poster !== 'N/A' ? item.Poster : 'https://via.placeholder.com/50x75?text=No+Image';
+                const poster = item.Poster !== 'N/A' ? item.Poster : 'no-image-thumbnail.png';
                 
                 suggestionItem.innerHTML = `
-                    <img src="${poster}" alt="${item.Title}" onerror="this.src='https://via.placeholder.com/50x75?text=No+Image'">
+                    <img src="${poster}" alt="${item.Title}" onerror="this.src='no-image-thumbnail.png'">
                     <div class="suggestion-info">
                         <div class="suggestion-title">${item.Title}</div>
                         <div class="suggestion-meta">${item.Year} • ${item.Type}</div>
@@ -2498,33 +2480,6 @@
                 suggestionItem.addEventListener('click', () => selectSearchResult(item));
                 suggestionsDiv.appendChild(suggestionItem);
             });
-        }
-
-        async function selectSearchResult(item) {
-            try {
-                // Get detailed information
-                const response = await fetch(`${OMDB_BASE_URL}?i=${item.imdbID}&apikey=${OMDB_API_KEY}&plot=full`);
-                const details = await response.json();
-                
-                if (details.Response === 'True') {
-                    const movie = {
-                        id: item.imdbID,
-                        title: details.Title,
-                        year: details.Year,
-                        rating: details.imdbRating !== 'N/A' ? parseFloat(details.imdbRating) / 2 : 4.0, // Convert to 5-star scale
-                        views: `${Math.floor(Math.random() * 10) + 1}.${Math.floor(Math.random() * 10)}M`,
-                        description: details.Plot !== 'N/A' ? details.Plot : 'No description available.',
-                        poster: details.Poster !== 'N/A' ? details.Poster : 'https://via.placeholder.com/400x600?text=No+Image',
-                        imdbID: item.imdbID,
-                        type: item.Type,
-                        genre: details.Genre
-                    };
-                    
-                    openMovieModal(movie);
-                }
-            } catch (error) {
-                console.error('Error fetching movie details:', error);
-            }
         }
 
         function clearSuggestions() {
@@ -2583,7 +2538,7 @@
                                     rating: details.imdbRating !== 'N/A' ? parseFloat(details.imdbRating) / 2 : 4.0,
                                     views: `${Math.floor(Math.random() * 10) + 1}.${Math.floor(Math.random() * 10)}M`,
                                     description: details.Plot !== 'N/A' ? details.Plot : 'No description available.',
-                                    poster: details.Poster !== 'N/A' ? details.Poster : 'https://via.placeholder.com/400x600?text=No+Image',
+                                    poster: details.Poster !== 'N/A' ? details.Poster : 'no-image-thumbnail.png',
                                     imdbID: movie.imdbID,
                                     type: movie.Type,
                                     genre: details.Genre
@@ -2648,6 +2603,78 @@
             populateMovieRow(elements.trendingRow, allMovies.trending);
             populateMovieRow(elements.topRatedRow, allMovies.topRated);
             populateMovieRow(elements.recentlyAddedRow, allMovies.recentlyAdded);
+        }
+
+        async function filterByTVShows() {
+            console.log('Filtering by TV Shows');
+            
+            // Show loading state
+            const sections = ['trending', 'topRated', 'recentlyAdded'];
+            sections.forEach(section => {
+                const container = document.getElementById(section + 'Row');
+                container.innerHTML = '<div style="color: #fff; padding: 2rem; text-align: center;">Loading TV Shows...</div>';
+            });
+            
+            try {
+                // Search for popular TV series
+                const tvQueries = ['Breaking Bad', 'Game of Thrones', 'The Office', 'Stranger Things', 'Friends', 'The Crown', 'Narcos', 'Sherlock', 'House of Cards', 'Westworld', 'The Walking Dead', 'Lost', 'Prison Break', 'Dexter', 'How I Met Your Mother'];
+                
+                const moviePromises = tvQueries.map(async (query) => {
+                    try {
+                        const response = await fetch(`${OMDB_BASE_URL}?s=${encodeURIComponent(query)}&type=series&apikey=${OMDB_API_KEY}`);
+                        const data = await response.json();
+                        
+                        if (data.Response === 'True' && data.Search && data.Search.length > 0) {
+                            const series = data.Search[0]; // Take first result
+                            const detailResponse = await fetch(`${OMDB_BASE_URL}?i=${series.imdbID}&apikey=${OMDB_API_KEY}`);
+                            const details = await detailResponse.json();
+                            
+                            if (details.Response === 'True') {
+                                return {
+                                    id: series.imdbID,
+                                    title: details.Title,
+                                    year: details.Year,
+                                    rating: details.imdbRating !== 'N/A' ? parseFloat(details.imdbRating) / 2 : 4.0,
+                                    views: `${Math.floor(Math.random() * 10) + 1}.${Math.floor(Math.random() * 10)}M`,
+                                    description: details.Plot !== 'N/A' ? details.Plot : 'No description available.',
+                                    poster: details.Poster !== 'N/A' ? details.Poster : 'no-image-thumbnail.png',
+                                    imdbID: series.imdbID,
+                                    type: 'series',
+                                    genre: details.Genre || 'Unknown'
+                                };
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error fetching TV show details:', error);
+                        return null;
+                    }
+                });
+                
+                const tvShows = (await Promise.all(moviePromises)).filter(show => show !== null);
+                
+                if (tvShows.length > 0) {
+                    // Update section titles
+                    document.querySelector('#trendingRow').previousElementSibling.innerHTML = `
+                        <h2>Popular TV Shows</h2>
+                        <p style="color: #cccccc; font-size: 0.9rem; margin-top: -1rem; margin-bottom: 1rem;">Binge-worthy series you can't miss</p>
+                    `;
+                    
+                    const trending = tvShows.slice(0, 5);
+                    const topRated = tvShows.slice(5, 10);
+                    const recentlyAdded = tvShows.slice(10, 15);
+                    
+                    populateMovieRow(elements.trendingRow, trending);
+                    populateMovieRow(elements.topRatedRow, topRated);
+                    populateMovieRow(elements.recentlyAddedRow, recentlyAdded);
+                    
+                } else {
+                    // Fallback to original movies if no results
+                    resetToOriginalMovies();
+                }
+            } catch (error) {
+                console.error('Error filtering TV shows:', error);
+                resetToOriginalMovies();
+            }
         }
 
         function openAccountSettings() {
@@ -2900,14 +2927,14 @@
             const continueWatching = getContinueWatchingData();
             const progress = continueWatching[movie.id]?.progress || 0;
             
-            // Use placeholder if poster is missing or N/A
+            // Use no-image-thumbnail if poster is missing or N/A
             const posterSrc = movie.poster && movie.poster !== 'N/A' 
                 ? movie.poster 
-                : 'https://via.placeholder.com/160x240/333/fff?text=No+Image';
+                : 'no-image-thumbnail.png';
             
             card.innerHTML = `
                 <div class="movie-poster">
-                    <img src="${posterSrc}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/160x240/333/fff?text=No+Image'">
+                    <img src="${posterSrc}" alt="${movie.title}" onerror="this.src='no-image-thumbnail.png'">
                     ${progress > 0 ? `<div class="progress-indicator" style="width: ${progress}%"></div>` : ''}
                 </div>
                 <div class="movie-info">
@@ -3104,8 +3131,8 @@
             episodesGrid.innerHTML = '';
             
             // Generate sample episodes for demonstration
-            // Using placeholder image if movie.poster is not available
-            const episodeThumbnailSrc = movie.poster && movie.poster !== 'N/A' ? movie.poster : 'https://via.placeholder.com/320x180?text=Episode';
+            // Using no-image-thumbnail if movie.poster is not available
+            const episodeThumbnailSrc = movie.poster && movie.poster !== 'N/A' ? movie.poster : 'no-image-thumbnail.png';
 
             const episodes = [
                 { number: 1, title: 'Pilot Episode', description: 'The beginning of an incredible journey...', duration: '45m' },
@@ -3122,7 +3149,7 @@
                 
                 episodeCard.innerHTML = `
                     <div class="episode-thumbnail">
-                        <img src="${episodeThumbnailSrc}" alt="Episode ${episode.number}" onerror="this.src='https://via.placeholder.com/320x180?text=Episode';" style="filter: brightness(0.7);">
+                        <img src="${episodeThumbnailSrc}" alt="Episode ${episode.number}" onerror="this.src='no-image-thumbnail.png';" style="filter: brightness(0.7);">
                         <button class="episode-play-btn">
                             <i class="fas fa-play"></i>
                         </button>
@@ -3185,12 +3212,12 @@
             const seasonNumber = elements.seasonSelect ? elements.seasonSelect.value : '1'; // Ensure seasonSelect is accessed correctly
 
             if (movie.type === 'series' && episodeNumber) {
-                embedLink = `https://vidlink.pro/tv/${movie.imdbID}/${seasonNumber}/${episodeNumber}`;
+                embedLink = `https://moviekex.online/embed/tv/${movie.imdbID}/${seasonNumber}/${episodeNumber}`;
             } else if (movie.type === 'series') {
                 // Default to season 1, episode 1 if playing a series without specific episode
-                embedLink = `https://vidlink.pro/tv/${movie.imdbID}/${seasonNumber}/1`; 
+                embedLink = `https://moviekex.online/embed/tv/${movie.imdbID}/${seasonNumber}/1`; 
             } else {
-                embedLink = `https://vidlink.pro/movie/${movie.imdbID}`;
+                embedLink = `https://moviekex.online/embed/movie/${movie.imdbID}`;
             }
             
             elements.embedPlayer.innerHTML = `
@@ -3463,6 +3490,37 @@
             startX = 0;
             isScrolling = false;
         }, { passive: true });
+
+        async function selectSearchResult(item) {
+            try {
+                // Fetch detailed information from OMDb
+                const response = await fetch(`${OMDB_BASE_URL}?i=${item.imdbID}&apikey=${OMDB_API_KEY}`);
+                const details = await response.json();
+                
+                if (details.Response === 'True') {
+                    const movie = {
+                        id: item.imdbID,
+                        title: details.Title,
+                        year: details.Year,
+                        rating: details.imdbRating !== 'N/A' ? parseFloat(details.imdbRating) / 2 : 4.0,
+                        views: `${Math.floor(Math.random() * 10) + 1}.${Math.floor(Math.random() * 10)}M`,
+                        description: details.Plot !== 'N/A' ? details.Plot : 'No description available.',
+                        poster: details.Poster !== 'N/A' ? details.Poster : 'no-image-thumbnail.png',
+                        imdbID: item.imdbID,
+                        type: item.Type || 'movie',
+                        genre: details.Genre || 'Unknown'
+                    };
+                    
+                    // Close search and open movie modal
+                    toggleSearch();
+                    openMovieModal(movie);
+                } else {
+                    console.error('Failed to fetch movie details');
+                }
+            } catch (error) {
+                console.error('Error selecting search result:', error);
+            }
+        }
     </script>
 </body>
 </html>
