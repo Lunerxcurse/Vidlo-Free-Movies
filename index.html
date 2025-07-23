@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -1459,7 +1460,6 @@
 
             .description {
                 font-size: 0.9rem;
-                line-height: 1.5;
             }
 
             .back-btn, .close-btn {
@@ -1716,7 +1716,7 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="#" id="navHome">
+                <a href="#" id="navHome" class="active">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
@@ -1745,7 +1745,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Hero Section -->
-        <section class="hero-section">
+        <section class="hero-section" style="display: none;">
             <div class="hero-carousel" id="heroCarousel">
                 <!-- Hero slides will be populated by JavaScript -->
             </div>
@@ -1781,6 +1781,36 @@
             </div>
         </section>
     </main>
+
+    <!-- Video Player -->
+    <div class="video-player-overlay" id="videoPlayer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+        <div class="video-container" style="width: 100%; height: 100%; position: relative;">
+            <button class="back-btn" id="backBtn" style="position: absolute; top: 1rem; left: 1rem; z-index: 10; background: rgba(0,0,0,0.8); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="embed-player" id="embedPlayer" style="width: 100%; height: 100%;">
+                <!-- Embed iframe will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Adblocker Warning -->
+    <div id="adblockWarning" class="adblock-warning" style="display: none;">
+        <strong> Use an Adblocker! </strong>
+        <p>Please ensure you have an adblocker enabled to avoid redirection and unwanted ads. Consider using a trusted adblocker like <a href="https://ublockorigin.com" target="_blank">uBlock Origin</a>.</p>
+        <p>Enjoy! </p>
+        <button onclick="dismissAdblockWarning()">Dismiss</button>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer-links">
+        <a href="#" class="footer-link-text" id="contactBtn">Contact</a>
+        <a href="#" class="footer-link-text" id="statusBtn">Status</a>
+        <a href="#" class="footer-link-text" id="aboutBtn">About Us</a>
+        <div class="copyright-text">
+            &copy; 2025 Vidlo. All Rights Reserved.
+        </div>
+    </footer>
 
     <!-- My Favorites Page -->
     <div class="page-overlay" id="myFavoritesPage">
@@ -1828,6 +1858,304 @@
             <div class="page-content">
                 <div class="movies-grid" id="historyGrid">
                     <!-- Watch history will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div class="page-overlay" id="contactPage">
+        <div class="page-container">
+            <div class="page-header">
+                <button class="back-btn" id="contactBackBtn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Contact Us</h1>
+            </div>
+            <div class="page-content">
+                <div class="contact-hero">
+                    <h2>Get in Touch</h2>
+                    <p>Have questions, suggestions, or need support? We're here to help! Reach out to us through any of the methods below.</p>
+                </div>
+                
+                <div class="contact-methods">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Support</h3>
+                        <p>For general inquiries and support</p>
+                        <a href="mailto:support@streamflix.com" class="contact-link">support@streamflix.com</a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Phone Support</h3>
+                        <p>Available 24/7 for urgent matters</p>
+                        <a href="tel:+15551234567" class="contact-link">+1 (555) 123-4567</a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Office Location</h3>
+                        <p>Visit us at our headquarters</p>
+                        <span class="contact-link">123 Stream Ave, Movie City, MC 12345</span>
+                    </div>
+                </div>
+                
+                <div class="contact-form-section">
+                    <h3>Send us a Message</h3>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a topic</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Page -->
+    <div class="page-overlay" id="statusPage">
+        <div class="page-container">
+            <div class="page-header">
+                <button class="back-btn" id="statusBackBtn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>System Status</h1>
+            </div>
+            <div class="page-content">
+                <div class="status-overview">
+                    <div class="status-summary">
+                        <div class="status-indicator-large online">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2>All Systems Operational</h2>
+                        <p>All services are running smoothly with no reported issues.</p>
+                    </div>
+                </div>
+                
+                <div class="status-services">
+                    <div class="service-category">
+                        <h3>Core Services</h3>
+                        <div class="service-grid">
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-server"></i> Web Servers</h4>
+                                    <p>Main application servers</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-database"></i> Database</h4>
+                                    <p>Movie and user data storage</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-cloud"></i> CDN</h4>
+                                    <p>Content delivery network</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-category">
+                        <h3>Streaming Services</h3>
+                        <div class="service-grid">
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-play-circle"></i> Video Player</h4>
+                                    <p>Movie and TV show streaming</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-film"></i> Movie API</h4>
+                                    <p>OMDb API integration</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-search"></i> Search Service</h4>
+                                    <p>Movie and TV show search</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-category">
+                        <h3>External Services</h3>
+                        <div class="service-grid">
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-globe"></i> MovieKex Embed</h4>
+                                    <p>Primary video hosting service</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-shield-alt"></i> Security Services</h4>
+                                    <p>DDoS protection and firewall</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-info">
+                                    <h4><i class="fas fa-chart-line"></i> Analytics</h4>
+                                    <p>Usage tracking and monitoring</p>
+                                </div>
+                                <div class="service-status online">
+                                    <span class="status-dot"></span>
+                                    <span>Operational</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="status-footer">
+                    <p><strong>Last updated:</strong> <span id="statusLastUpdated"></span></p>
+                    <p>If you're experiencing issues not reflected here, please <a href="#" id="contactFromStatus">contact support</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Page -->
+    <div class="page-overlay" id="aboutPage">
+        <div class="page-container">
+            <div class="page-header">
+                <button class="back-btn" id="aboutBackBtn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>About Us</h1>
+            </div>
+            <div class="page-content">
+                <div class="about-hero">
+                    <h2>Welcome to Vidlo</h2>
+                    <p>Your ultimate destination for movies and TV shows, created with passion for entertainment and technology.</p>
+                </div>
+                
+                <div class="about-sections">
+                    <div class="about-section">
+                        <h3><i class="fas fa-rocket"></i> Our Mission</h3>
+                        <p>Vidlo was created to provide a seamless, high-quality streaming experience for movie and TV show enthusiasts. We believe that entertainment should be accessible, intuitive, and enjoyable for everyone.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><i class="fas fa-code"></i> Technology Stack</h3>
+                        <p>Built with modern web technologies including HTML5, CSS3, JavaScript, and integrated with the OMDb API for comprehensive movie data. Our platform uses MovieKex for reliable video streaming.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><i class="fas fa-user-circle"></i> Meet the Developer</h3>
+                        <p>Vidlo is developed and maintained by a passionate developer who loves creating innovative streaming solutions. Get to know more about the creator:</p>
+                        
+                        <div class="developer-info">
+                            <div class="social-links">
+                                <a href="http://discord.com/users/1395993370245206129" target="_blank" class="social-link discord" onclick="copyDiscord()">
+                                    <i class="fab fa-discord"></i>
+                                    <span>Discord</span>
+                                </a>
+                                <a href="https://www.roblox.com/users/4819145/profile" target="_blank" class="social-link roblox">
+                                    <i class="fas fa-gamepad"></i>
+                                    <span>Roblox</span>
+                                </a>
+                                <a href="https://profilepage-com.pages.dev/" target="_blank" class="social-link portfolio">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>All Projects</span>
+                                </a>
+                                <a href="https://github.com/Lunerxcurse" target="_blank" class="social-link github">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><i class="fas fa-heart"></i> What Makes Us Special</h3>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Completely free streaming platform</li>
+                            <li><i class="fas fa-check"></i> No registration required</li>
+                            <li><i class="fas fa-check"></i> Mobile-responsive design</li>
+                            <li><i class="fas fa-check"></i> Extensive movie and TV show library</li>
+                            <li><i class="fas fa-check"></i> Real-time search functionality</li>
+                            <li><i class="fas fa-check"></i> User-friendly interface</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><i class="fas fa-road"></i> Future Plans</h3>
+                        <p>We're constantly working to improve StreamFlix with new features like personalized recommendations, improved streaming quality, subtitle support, and much more. Stay tuned for exciting updates!</p>
+                    </div>
+                </div>
+                
+                <div class="about-footer">
+                    <p>Thank you for choosing Vidlo. We hope you enjoy your streaming experience!</p>
                 </div>
             </div>
         </div>
@@ -1932,26 +2260,6 @@
         </div>
     </div>
 
-    <!-- Video Player -->
-    <div class="video-player-overlay" id="videoPlayer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
-        <div class="video-container" style="width: 100%; height: 100%; position: relative;">
-            <button class="back-btn" id="backBtn" style="position: absolute; top: 1rem; left: 1rem; z-index: 10; background: rgba(0,0,0,0.8); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <div class="embed-player" id="embedPlayer" style="width: 100%; height: 100%;">
-                <!-- Embed iframe will be inserted here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Adblocker Warning -->
-    <div id="adblockWarning" class="adblock-warning" style="display: none;">
-        <strong>⛔ Use an Adblocker! ⛔</strong>
-        <p>Please ensure you have an adblocker enabled to avoid redirection and unwanted ads. Consider using a trusted adblocker like <a href="https://ublockorigin.com" target="_blank">uBlock Origin</a>.</p>
-        <p>Enjoy! 😃</p>
-        <button onclick="dismissAdblockWarning()">Dismiss</button>
-    </div>
-
     <script>
         // OMDb API configuration
         const OMDB_API_KEY = 'afcd4c24';
@@ -2000,7 +2308,7 @@
                     rating: 4.2,
                     views: "13.7M",
                     description: "A computer programmer is led to fight an underground war against powerful computers who have constructed his entire reality with a system called the Matrix.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00NDJjLTk4NDItYTRmY2EwMWI5MTktXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
                     imdbID: "tt0133093",
                     type: "movie"
                 },
@@ -2046,7 +2354,7 @@
                     rating: 4.7,
                     views: "12.8M",
                     description: "An organized crime dynasty's aging patriarch transfers control of his clandestine empire to his reluctant son.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00NDJjLTk4NDItYTRmY2EwMWI5MTktXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
                     imdbID: "tt0068646",
                     type: "movie"
                 },
@@ -2068,7 +2376,7 @@
                     rating: 4.5,
                     views: "8.9M",
                     description: "A jury holdout attempts to prevent a miscarriage of justice by forcing his colleagues to reconsider the evidence.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BMWU4N2FjNzYtNTVkNC00NzQ0LTg0MjAtYTJlMjFhNGUxZDFmXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BMWU4N2FjNzYtNWUzMi00ZTdkLWI5NTgtNjlmMjBiNzU2MmI5XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_SX300.jpg",
                     imdbID: "tt0050083",
                     type: "movie"
                 },
@@ -2079,7 +2387,7 @@
                     rating: 4.7,
                     views: "11.3M",
                     description: "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNDUzOTQ1MjY@._V1_SX300.jpg",
                     imdbID: "tt0108052",
                     type: "movie"
                 }
@@ -2103,7 +2411,7 @@
                     rating: 4.5,
                     views: "13.2M",
                     description: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItY2ViMjE3YzI5MjljXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
                     imdbID: "tt0110912",
                     type: "movie"
                 },
@@ -2182,7 +2490,7 @@
                     rating: 4.1,
                     views: "9.8M",
                     description: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.",
-                    poster: "https://m.media-amazon.com/images/M/MV5BMjlmZmI5MDctNDE2YS00YWE0LWE5ZWItZDBhYWQ0NTcxNWRhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+                    poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWE5ZWItZDBhYWQ0NTcxNWRhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
                     imdbID: "tt0245429",
                     type: "movie"
                 },
@@ -2205,7 +2513,12 @@
         let heroInterval;
         let currentMovie = null;
         let isPlaying = false;
-        let currentMedia = { imdbID: '', title: '', year: '', type: '' };
+        let currentMedia = { 
+            imdbID: '', 
+            title: '', 
+            year: '', 
+            type: '' 
+        };
         let allMovies = {}; // Store all movies for filtering
 
         // Local storage keys
@@ -2255,21 +2568,33 @@
             dislikeBtn: document.getElementById('dislikeBtn'), // Added to elements
             watchLaterBtn: document.getElementById('watchLaterBtn'), // Added to elements
             trailerBtn: document.getElementById('trailerBtn'), // Added to elements
-            shareBtn: document.getElementById('shareBtn') // Added to elements
+            shareBtn: document.getElementById('shareBtn'), // Added to elements
+            // Footer pages
+            contactBtn: document.getElementById('contactBtn'),
+            statusBtn: document.getElementById('statusBtn'),
+            aboutBtn: document.getElementById('aboutBtn'),
+            contactPage: document.getElementById('contactPage'),
+            statusPage: document.getElementById('statusPage'),
+            aboutPage: document.getElementById('aboutPage'),
+            contactBackBtn: document.getElementById('contactBackBtn'),
+            statusBackBtn: document.getElementById('statusBackBtn'),
+            aboutBackBtn: document.getElementById('aboutBackBtn'),
+            statusLastUpdated: document.getElementById('statusLastUpdated'),
+            contactFromStatus: document.getElementById('contactFromStatus') // Added contactFromStatus
         };
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
+            updateFooterTimestamp();
         });
 
         function initializeApp() {
             setupEventListeners();
-            createHeroCarousel();
+            
             populateMovieRows();
             updateContinueWatchingSection();
-            startHeroCarousel();
-            showAdblockWarning();
+            
             // Store all movies for filtering
             allMovies = {
                 trending: movieData.trending,
@@ -2278,11 +2603,66 @@
             };
         }
 
+        function updateFooterTimestamp() {
+            const lastUpdatedElement = document.getElementById('statusLastUpdated'); // Changed to statusLastUpdated
+            if (lastUpdatedElement) {
+                const now = new Date();
+                lastUpdatedElement.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            }
+        }
+
         function setupEventListeners() {
             // Navigation
             if (elements.searchBtn) elements.searchBtn.addEventListener('click', toggleSearch);
             if (elements.searchClose) elements.searchClose.addEventListener('click', toggleSearch);
             if (elements.searchInput) elements.searchInput.addEventListener('input', handleSearch);
+            
+            // Mobile navigation
+            const navHome = document.getElementById('navHome');
+            const navMovies = document.getElementById('navMovies');
+            const navSearch = document.getElementById('navSearch');
+            const navAccount = document.getElementById('navAccount');
+            
+            if (navHome) {
+                navHome.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveNavItem('navHome');
+                    closePage();
+                    closeModal();
+                    closeMobileDropdown();
+                });
+            }
+            
+            if (navMovies) {
+                navMovies.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveNavItem('navMovies');
+                    closePage();
+                    closeModal();
+                    closeMobileDropdown();
+                    // Show all movies or filter by movies
+                    resetToOriginalMovies();
+                });
+            }
+            
+            if (navSearch) {
+                navSearch.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveNavItem('navSearch');
+                    closePage();
+                    closeModal();
+                    closeMobileDropdown();
+                    toggleSearch();
+                });
+            }
+            
+            if (navAccount) {
+                navAccount.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setActiveNavItem('navAccount');
+                    toggleAccountDropdownMobile();
+                });
+            }
             
             // Dropdown menus
             if (elements.genresDropdown) {
@@ -2351,6 +2731,25 @@
             if (elements.favoritesBackBtn) elements.favoritesBackBtn.addEventListener('click', closePage);
             if (elements.watchLaterBackBtn) elements.watchLaterBackBtn.addEventListener('click', closePage);
             if (elements.historyBackBtn) elements.historyBackBtn.addEventListener('click', closePage);
+
+            // Footer button event listeners
+            if (elements.contactBtn) elements.contactBtn.addEventListener('click', openContactPage);
+            if (elements.statusBtn) elements.statusBtn.addEventListener('click', openStatusPage);
+            if (elements.aboutBtn) elements.aboutBtn.addEventListener('click', openAboutPage);
+
+            // Back buttons for footer pages
+            if (elements.contactBackBtn) elements.contactBackBtn.addEventListener('click', closePage);
+            if (elements.statusBackBtn) elements.statusBackBtn.addEventListener('click', closePage);
+            if (elements.aboutBackBtn) elements.aboutBackBtn.addEventListener('click', closePage);
+
+            // Contact link within status page
+            if (elements.contactFromStatus) {
+                elements.contactFromStatus.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closePage(); // Close status page
+                    openContactPage(); // Open contact page
+                });
+            }
             
             // Live Shows link
             const liveShowsLink = document.getElementById('liveShowsLink');
@@ -2388,6 +2787,18 @@
                     }
                 }
             });
+        }
+
+        function setActiveNavItem(activeId) {
+            // Remove active class from all nav items
+            const navItems = document.querySelectorAll('.mobile-bottom-nav a');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Add active class to selected item
+            const activeItem = document.getElementById(activeId);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
         }
 
         // Add new function for mobile account dropdown
@@ -2896,6 +3307,7 @@
 
         function changeHeroSlide(direction) {
             const slides = document.querySelectorAll('.hero-slide');
+            if (slides.length === 0) return;
             slides[currentHeroSlide].classList.remove('active');
             
             currentHeroSlide += direction;
@@ -2984,9 +3396,16 @@
                 type: movie.type || 'movie' 
             };
             
-            // Update modal content
-            document.getElementById('modalPoster').src = movie.poster;
-            document.getElementById('modalBackdrop').src = movie.poster; // Use poster as backdrop for now
+            // Update modal content with fallback for missing images
+            const posterSrc = movie.poster && movie.poster !== 'N/A' ? movie.poster : 'no-image-thumbnail.png';
+            const backdropSrc = movie.poster && movie.poster !== 'N/A' ? movie.poster : 'no-image-thumbnail.png';
+            
+            document.getElementById('modalPoster').src = posterSrc;
+            document.getElementById('modalPoster').onerror = function() { this.src = 'no-image-thumbnail.png'; };
+            
+            document.getElementById('modalBackdrop').src = backdropSrc;
+            document.getElementById('modalBackdrop').onerror = function() { this.src = 'no-image-thumbnail.png'; };
+            
             document.getElementById('modalTitle').textContent = movie.title;
             document.getElementById('modalYear').textContent = movie.year;
             document.getElementById('modalStars').innerHTML = generateStars(movie.rating);
@@ -3377,16 +3796,6 @@
         }
 
         function updateContinueWatchingSection() {
-            // This function is no longer needed to update a homepage section.
-            // The "Watch Later" content will only be displayed on its dedicated page.
-        }
-
-        function updateWatchLaterSection() {
-            // This function is no longer needed to update a homepage section.
-            // The "Watch Later" content will only be displayed on its dedicated page.
-        }
-
-        function updateContinueWatchingSection() {
             const continueWatchingData = getContinueWatchingData();
             const continueWatchingMovies = Object.values(continueWatchingData)
                 .sort((a, b) => b.timestamp - a.timestamp)
@@ -3520,6 +3929,33 @@
             } catch (error) {
                 console.error('Error selecting search result:', error);
             }
+        }
+        
+        function openContactPage() {
+            elements.contactPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openStatusPage() {
+            const now = new Date();
+            elements.statusLastUpdated.textContent = now.toLocaleString();
+            elements.statusPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openAboutPage() {
+            elements.aboutPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function copyDiscord() {
+            const discordId = "1395993370245206129"; // Replace with actual Discord ID
+            navigator.clipboard.writeText(discordId).then(() => {
+                alert(`Discord ID "${discordId}" copied to clipboard!`);
+            }).catch(err => {
+                console.error('Failed to copy Discord ID: ', err);
+                prompt('Copy this Discord ID:', discordId);
+            });
         }
     </script>
 </body>
