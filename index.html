@@ -375,46 +375,10 @@
 </div>
 
 <!-- Desktop Sidebar (hidden on mobile) -->
-<nav class="hidden md:flex fixed left-0 top-0 h-full w-64 bg-[#0A0A0A] border-r border-white/5 backdrop-blur-xl bg-opacity-80 flex-col py-8 px-4 justify-between z-50">
-  <div class="mb-12 px-4">
-    <h1 class="text-2xl font-black tracking-tighter text-indigo-500">Vidlo</h1>
-    <p class="text-xs text-neutral-400 font-medium mt-1 uppercase tracking-wider opacity-70">Premium Streaming</p>
-  </div>
 
-  <ul class="flex flex-col gap-2 flex-1">
-    <li>
-      <a id="sidebar-home" class="flex items-center gap-4 text-indigo-400 font-semibold bg-white/5 rounded-lg px-4 py-3 border-l-2 border-indigo-500 active:scale-[0.98] transition-transform duration-200 ease-out" href="#">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
-        <span class="font-label-md text-label-md">Home</span>
-      </a>
-    </li>
-    <li>
-      <a id="sidebar-discover" class="flex items-center gap-4 text-gray-400 font-medium px-4 py-3 transition-all duration-300 hover:bg-white/5 hover:text-white active:scale-[0.98] ease-out" href="#">
-        <span class="material-symbols-outlined">explore</span>
-        <span class="font-label-md text-label-md">Discover</span>
-      </a>
-    </li>
-    <li>
-      <a id="sidebar-watchlist" class="flex items-center gap-4 text-gray-400 font-medium px-4 py-3 transition-all duration-300 hover:bg-white/5 hover:text-white active:scale-[0.98] ease-out" href="#">
-        <span class="material-symbols-outlined">schedule</span>
-        <span class="font-label-md text-label-md">Watchlist</span>
-      </a>
-    </li>
-    <li>
-      <a id="sidebar-settings" class="flex items-center gap-4 text-gray-400 font-medium px-4 py-3 transition-all duration-300 hover:bg-white/5 hover:text-white active:scale-[0.98] ease-out" href="#">
-        <span class="material-symbols-outlined">settings</span>
-        <span class="font-label-md text-label-md">Settings</span>
-      </a>
-    </li>
-  </ul>
-
-  <button id="sidebar-collapse" class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-16 bg-[#0A0A0A] border border-white/10 rounded-full flex items-center justify-center text-gray-500 hover:text-white transition-all duration-300 group shadow-2xl z-50 hover:bg-white/5" title="Minimize Sidebar">
-    <span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:-translate-x-0.5" style="font-variation-settings: 'wght' 300;">chevron_left</span>
-  </button>
-</nav>
 
 <!-- MAIN (mobile first). The original UI markup was preserved; cards will be replaced by JS -->
-<main id="app" class="flex-1 pt-4 md:pt-24 md:ml-64 space-y-8 px-0">
+<main id="app" class="flex-1 pt-4 md:pt-24 space-y-8 px-0">
 
   <!-- Popular - Movie -->
   <section class="space-y-4">
@@ -1783,10 +1747,10 @@ function openSettingsPanelDesktop(){
   clone.style.position = 'fixed';
   clone.style.top = '0';
   clone.style.bottom = '0';
-  clone.style.left = '16rem'; /* match .w-64 sidebar width */
+  clone.style.left = '0';
   clone.style.right = '0';
-  // make the clone span full available area to the right of the sidebar
-  clone.style.width = 'calc(100% - 16rem)';
+  // make the clone span the full viewport (no sidebar)
+  clone.style.width = '100%';
   clone.style.height = '100vh';
   clone.style.boxSizing = 'border-box';
   // match discover/watchlist clones: allow scrolling inside the clone and keep stacking consistent
@@ -2121,13 +2085,13 @@ function openWatchlistPanelDesktop(){
   clone.id = 'watchlist-panel-desktop';
   clone.classList.remove('hidden');
 
-  // Position clone to cover viewport except the left sidebar (16rem / 256px)
+  // Position clone to cover the full viewport (no sidebar)
   clone.style.position = 'fixed';
   clone.style.top = '0';
   clone.style.bottom = '0';
-  clone.style.left = '16rem';
+  clone.style.left = '0';
   clone.style.right = '0';
-  clone.style.width = 'calc(100% - 16rem)';
+  clone.style.width = '100%';
   clone.style.maxWidth = 'none';
   clone.style.borderRadius = '0';
   clone.style.zIndex = '90';
@@ -2228,13 +2192,13 @@ function openDiscoverPanelDesktop(){
   clone.id = 'discover-panel-desktop';
   clone.classList.remove('hidden');
 
-  // Position clone to cover viewport except the left sidebar (16rem / 256px)
+  // Position clone to cover the full viewport (no sidebar)
   clone.style.position = 'fixed';
   clone.style.top = '0';
   clone.style.bottom = '0';
-  clone.style.left = '16rem';
+  clone.style.left = '0';
   clone.style.right = '0';
-  clone.style.width = 'calc(100% - 16rem)';
+  clone.style.width = '100%';
   clone.style.maxWidth = 'none';
   clone.style.borderRadius = '0';
   clone.style.zIndex = '90';
