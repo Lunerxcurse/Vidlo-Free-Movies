@@ -2514,8 +2514,8 @@ qs('#details-modal').addEventListener('click', e => {
         <!-- Sign Up (default pane) -->
         <div id="auth-signup" class="">
           <div class="text-center mb-6">
-            <h3 class="text-lg font-semibold text-white mb-1">Create Account</h3>
-            <p class="text-sm text-neutral-400">Enjoy 50k+ movies and 10k+ series for $1.</p>
+            <h3 id="auth-signup-title" class="text-lg font-semibold text-white mb-1">Create Account</h3>
+            <p id="auth-signup-desc" class="text-sm text-neutral-400">Enjoy 50k+ movies and 10k+ series for $1.</p>
           </div>
 
           <form id="signup-form" class="space-y-3" novalidate>
@@ -2548,7 +2548,7 @@ qs('#details-modal').addEventListener('click', e => {
                   </svg>
                 </label>
               </div>
-              <label class="text-sm text-on-surface-variant">I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a></label>
+              <label id="auth-terms-label" class="text-sm text-on-surface-variant">I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a></label>
             </div>
 
             <div class="flex items-start gap-3">
@@ -2560,22 +2560,22 @@ qs('#details-modal').addEventListener('click', e => {
                   </svg>
                 </label>
               </div>
-              <label class="text-sm text-on-surface-variant">I confirm that I am 13 years of age or older</label>
+              <label id="auth-age-label" class="text-sm text-on-surface-variant">I confirm that I am 13 years of age or older</label>
             </div>
 
-            <button class="w-full mt-2 py-3 rounded bg-blue-500 text-white" type="submit">Create Account</button>
+            <button id="signup-button" class="w-full mt-2 py-3 rounded bg-blue-500 text-white" type="submit">Create Account</button>
           </form>
 
           <p class="mt-4 text-sm text-neutral-400 text-center">
-            Already have an account? <button id="to-signin" class="text-blue-300">Sign in</button>
+            <span id="auth-signup-already">Already have an account?</span> <button id="to-signin" class="text-blue-300">Sign in</button>
           </p>
         </div>
 
         <!-- Sign In pane (hidden by default) -->
         <div id="auth-signin" class="hidden">
           <div class="text-center mb-6">
-            <h3 class="text-lg font-semibold text-white mb-1">Sign in</h3>
-            <p class="text-sm text-neutral-400">Welcome back — sign in to continue.</p>
+            <h3 id="auth-signin-title" class="text-lg font-semibold text-white mb-1">Sign in</h3>
+            <p id="auth-signin-desc" class="text-sm text-neutral-400">Welcome back — sign in to continue.</p>
           </div>
 
           <form id="signin-form" class="space-y-3">
@@ -2591,11 +2591,11 @@ qs('#details-modal').addEventListener('click', e => {
 
             <div class="flex items-center justify-between"></div>
 
-            <button class="w-full mt-2 py-3 rounded bg-blue-500 text-white" type="submit">Sign in</button>
+            <button id="signin-button" class="w-full mt-2 py-3 rounded bg-blue-500 text-white" type="submit">Sign in</button>
           </form>
 
           <p class="mt-4 text-sm text-neutral-400 text-center">
-            Don't have an account? <button id="to-signup" class="text-blue-300">Create account</button>
+            <span id="auth-signin-noto">Don't have an account?</span> <button id="to-signup" class="text-blue-300">Create account</button>
           </p>
         </div>
       </div>
@@ -3303,7 +3303,25 @@ if(typeof performSearch === 'function'){
         "share-btn": "Share",
         "play-btn": "Play",
         "trailer-btn": "Watch Trailer",
-        "about-credits": "Made by Brian Subirat — see my other projects: https://pakodev-profile.pages.dev/"
+        "about-credits": "Made by Brian Subirat — see my other projects: https://pakodev-profile.pages.dev/",
+        // Auth modal (signup)
+        "auth-signup-title": "Create Account",
+        "auth-signup-desc": "Enjoy 50k+ movies and 10k+ series for $1.",
+        "auth-signup-fullname-placeholder": "Full Name",
+        "auth-signup-email-placeholder": "Email address",
+        "auth-signup-password-placeholder": "Password",
+        "auth-signup-confirm-placeholder": "Confirm Password",
+        "auth-terms-text": "I agree to the Terms of Service and Privacy Policy",
+        "auth-age-text": "I confirm that I am 13 years of age or older",
+        "auth-signup-button": "Create Account",
+        "auth-signup-already": "Already have an account?",
+        // Auth modal (signin)
+        "auth-signin-title": "Sign in",
+        "auth-signin-desc": "Welcome back — sign in to continue.",
+        "auth-signin-email-placeholder": "Email address",
+        "auth-signin-password-placeholder": "Password",
+        "auth-signin-button": "Sign in",
+        "auth-to-signup": "Don't have an account? Create account"
       },
       es: {
         "settings-title": "Ajustes",
@@ -3340,7 +3358,25 @@ if(typeof performSearch === 'function'){
         "share-btn": "Compartir",
         "play-btn": "Reproducir",
         "trailer-btn": "Ver tráiler",
-        "about-credits": "Hecho por Brian Subirat — ve mis otros proyectos: https://pakodev-profile.pages.dev/"
+        "about-credits": "Hecho por Brian Subirat — ve mis otros proyectos: https://pakodev-profile.pages.dev/",
+        // Auth modal (signup)
+        "auth-signup-title": "Crear cuenta",
+        "auth-signup-desc": "Disfruta 50k+ películas y 10k+ series por $1.",
+        "auth-signup-fullname-placeholder": "Nombre completo",
+        "auth-signup-email-placeholder": "Correo electrónico",
+        "auth-signup-password-placeholder": "Contraseña",
+        "auth-signup-confirm-placeholder": "Confirmar contraseña",
+        "auth-terms-text": "Acepto los Términos de Servicio y la Política de Privacidad",
+        "auth-age-text": "Confirmo que tengo 13 años o más",
+        "auth-signup-button": "Crear cuenta",
+        "auth-signup-already": "¿Ya tienes una cuenta?",
+        // Auth modal (signin)
+        "auth-signin-title": "Iniciar sesión",
+        "auth-signin-desc": "Bienvenido de nuevo — inicia sesión para continuar.",
+        "auth-signin-email-placeholder": "Correo electrónico",
+        "auth-signin-password-placeholder": "Contraseña",
+        "auth-signin-button": "Iniciar sesión",
+        "auth-to-signup": "¿No tienes cuenta? Crear cuenta"
       }
     };
 
@@ -3375,6 +3411,49 @@ if(typeof performSearch === 'function'){
         'nav-search': '#nav-search-label',
         'nav-settings': '#nav-settings-label'
       };
+
+      // Update auth modal texts and placeholders if present
+      try {
+        // signup pane
+        const signupTitle = document.getElementById('auth-signup-title');
+        const signupDesc = document.getElementById('auth-signup-desc');
+        const signupButton = document.getElementById('signup-button');
+        const signupAlready = document.getElementById('auth-signup-already');
+        const termsLabel = document.getElementById('auth-terms-label');
+        const ageLabel = document.getElementById('auth-age-label');
+
+        if(signupTitle && map['auth-signup-title']) signupTitle.textContent = map['auth-signup-title'];
+        if(signupDesc && map['auth-signup-desc']) signupDesc.textContent = map['auth-signup-desc'];
+        if(signupButton && map['auth-signup-button']) signupButton.textContent = map['auth-signup-button'];
+        if(signupAlready && map['auth-signup-already']) signupAlready.textContent = map['auth-signup-already'];
+        if(termsLabel && map['auth-terms-text']) termsLabel.textContent = map['auth-terms-text'];
+        if(ageLabel && map['auth-age-text']) ageLabel.textContent = map['auth-age-text'];
+
+        // placeholders
+        const suName = document.getElementById('su-name');
+        const suEmail = document.getElementById('su-email');
+        const suPass = document.getElementById('su-password');
+        const suPassC = document.getElementById('su-password-confirm');
+
+        if(suName && map['auth-signup-fullname-placeholder']) suName.placeholder = map['auth-signup-fullname-placeholder'];
+        if(suEmail && map['auth-signup-email-placeholder']) suEmail.placeholder = map['auth-signup-email-placeholder'];
+        if(suPass && map['auth-signup-password-placeholder']) suPass.placeholder = map['auth-signup-password-placeholder'];
+        if(suPassC && map['auth-signup-confirm-placeholder']) suPassC.placeholder = map['auth-signup-confirm-placeholder'];
+
+        // signin pane
+        const signinTitle = document.getElementById('auth-signin-title');
+        const signinDesc = document.getElementById('auth-signin-desc');
+        const signinButton = document.getElementById('signin-button');
+        const siEmail = document.getElementById('si-email');
+        const siPass = document.getElementById('si-password');
+
+        if(signinTitle && map['auth-signin-title']) signinTitle.textContent = map['auth-signin-title'];
+        if(signinDesc && map['auth-signin-desc']) signinDesc.textContent = map['auth-signin-desc'];
+        if(signinButton && map['auth-signin-button']) signinButton.textContent = map['auth-signin-button'];
+        if(siEmail && map['auth-signin-email-placeholder']) siEmail.placeholder = map['auth-signin-email-placeholder'];
+        if(siPass && map['auth-signin-password-placeholder']) siPass.placeholder = map['auth-signin-password-placeholder'];
+
+      } catch(e){}
       Object.keys(navMap).forEach(k => {
         const sel = navMap[k];
         const node = document.querySelector(sel);
